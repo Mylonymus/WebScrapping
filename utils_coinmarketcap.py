@@ -85,15 +85,21 @@ def build_object(fila):
   acciones_max = fila.find_element(By.XPATH, './td[11]')
   volumen = fila.find_element(By.XPATH, './td[9]/div/a/p')
   
+
+
   rankings.append(ranking.text)
   nombres_crypto.append(nombre.text)
   precios.append(precio.text)
   capitalizaciones_de_mercado.append(capitalizacion.text)
-  cantidades_maxima_tokens.append(acciones_max.text.split()) #WIP
-  simbolos.append(simbolo.text.split()) #WIP
+  cantidades_maxima_tokens.append(create_int_removing_commas(acciones_max.text.split()[0])) #WIP
+  simbolos.append(simbolo.text.split()[1]) #WIP
   volumenes.append(volumen.text)
 
 def build_export_to_csv():
   df = pd.DataFrame({'Ranking': rankings, 'Simbolo': simbolos, 'Nombre': nombres_crypto, 'Cantidad Máxima de tokens': cantidades_maxima_tokens, 'Capitalización Total de Mercado': capitalizaciones_de_mercado, 'Precio': precios, 'Volumen 24h': volumenes})
   print(df)
   df.to_csv('NTokens_Crypto_CoinMarketCap.csv', index=False)
+
+
+def create_int_removing_commas(numero):
+  return int(numero.replace(',', ''))
